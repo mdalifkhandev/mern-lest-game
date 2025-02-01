@@ -3,18 +3,20 @@
 import Loading from '@/src/app/signup/loading';
 import { useGateSingleUser, useUserUpdathe } from '@/src/hooks/user.hooks';
 import { Button } from '@heroui/button';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const Page = () => {
     const params = useParams();
     const id = params.id as string;
     const { data, isLoading, error } = useGateSingleUser(id);
     const user = data?.data;
+    const navigate = useRouter()
 
-    const {mutate:updathData,isSuccess,isPaused} = useUserUpdathe(id)
+    const { mutate: updathData, isSuccess, isPaused } = useUserUpdathe(id);
 
-    const [isDeleted,setIsDeleted] = useState<boolean>()
+    const [isDeleted, setIsDeleted] = useState<boolean>();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -33,7 +35,6 @@ const Page = () => {
         }
     }, [user]);
 
-
     useEffect(() => {
         if (user) {
             setIsDeleted(user.isDeleted || false);
@@ -48,22 +49,76 @@ const Page = () => {
         }));
     };
 
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        }
+    });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        updathData(formData);
+        // updathData(formData);
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Are you sure in User Updathed!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Updathed it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updathData(formData);
+                navigate.push("/admin/user");
+                Swal.fire({
+                    title: "Updathed!",
+                    text: "User Updath Successfully.",
+                    icon: "success"
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "Cancelled",
+                    text: "Your file is safe :)",
+                    icon: "error"
+                });
+            }
+        });
     };
 
-    const hendleUnBlockUser=()=>{
-        updathData({isDeleted:false})
-        setIsDeleted(false)
-        
-    }
+
+    const handleUnBlockUser = () => {
+
+        swalWithBootstrapButtons.fire({
+            title: "Are you sure?",
+            text: "Are you sure in User UnBlockd!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, UnBlock it!",
+            cancelButtonText: "No, cancel!",
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                updathData({ isDeleted: false });
+                setIsDeleted(false);
+                navigate.push("/admin/user");
+                Swal.fire({
+                    title: "Un Blocked!",
+                    text: "User Un Blocked Successfully.",
+                    icon: "success"
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "Cancelled",
+                    text: "Your file is safe :)",
+                    icon: "error"
+                });
+            }
+        });
+    };
 
     if (isLoading && !data) {
         return <Loading />;
     }
-   
-   
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
@@ -116,7 +171,7 @@ const Page = () => {
 
                 {/* Conditional Unblock Button */}
                 {isDeleted && (
-                    <Button onPress={hendleUnBlockUser} className="bg-green-500 hover:bg-green-600 mb-6">
+                    <Button onPress={handleUnBlockUser} className="bg-green-500 hover:bg-green-600 mb-6">
                         User Unblock
                     </Button>
                 )}

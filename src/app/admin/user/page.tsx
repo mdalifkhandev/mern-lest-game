@@ -2,6 +2,7 @@
 
 import { useDeletedUser, useGetAllUsers } from "@/src/hooks/user.hooks";
 import Loading from "../../signup/loading";
+import Swal from "sweetalert2";
 
 
 
@@ -18,6 +19,42 @@ const page = () => {
   const { data, isLoading, error } = useGetAllUsers();
   const {mutate: deletedUser,  error: deleteError } = useDeletedUser()
 
+  const swalWithBootstrapButtons = Swal.mixin({
+    customClass: {
+      confirmButton: "btn btn-success",
+      cancelButton: "btn btn-danger"
+    }
+  });
+
+const handleDeleteUser = (id:string) => {
+  swalWithBootstrapButtons.fire({
+              title: "Are you sure?",
+              text: "Are you sure in deleting the user!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, delete it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true
+          }).then((result) => {
+              if (result.isConfirmed) {
+                deletedUser(id)
+                  Swal.fire({
+                      title: "Deleted!",
+                      text: "User Deleted Successfully.",
+                      icon: "success"
+                  });
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                  Swal.fire({
+                      title: "Cancelled",
+                      text: "Your file is safe :)",
+                      icon: "error"
+                  });
+              }
+          });
+  
+}
+
+
   if (isLoading) return <Loading/>
   if (error) return <p>Error: {error.message}</p>;
 
@@ -25,14 +62,6 @@ const page = () => {
 
 
 
-  // const datas = [
-  //   { name: "John Doe", email: "johndoe@example.com", role: "Admin" },
-  //   { name: "Jane Smith", email: "janesmith@example.com", role: "Editor" },
-  //   { name: "Mark Brown", email: "markbrown@example.com", role: "Viewer" },
-  //   { name: "John Doe", email: "johndoe@example.com", role: "Admin" },
-  //   { name: "Jane Smith", email: "janesmith@example.com", role: "Editor" },
-  //   { name: "Mark Brown", email: "markbrown@example.com", role: "Viewer" },
-  // ];
 
   return (
     <div className="p-4">
@@ -63,7 +92,7 @@ const page = () => {
                       Deleted
                     </button> 
                     : 
-                    <button onClick={()=>deletedUser(item._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+                    <button onClick={()=>handleDeleteUser(item._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
                       Delete
                     </button>
                   }

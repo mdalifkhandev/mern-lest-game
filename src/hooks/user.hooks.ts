@@ -26,12 +26,12 @@ export const useDeletedUser = () => {
     return useMutation({
         mutationFn: async (id: string) => await deleteUser(id),
         onSuccess: () => {
-            Swal.fire({
-                title: "Success",
-                text: "User Deleted Successfully",
-                icon: "success",
-                confirmButtonText: "OK",
-            })
+            // Swal.fire({
+            //     title: "Success",
+            //     text: "User Deleted Successfully",
+            //     icon: "success",
+            //     confirmButtonText: "OK",
+            // })
 
             queryClient.invalidateQueries({ queryKey: ["GET_ALL_USER"] })
         }
@@ -45,11 +45,11 @@ export const useUserUpdathe = (id:string) => {
     return useMutation({
         mutationFn: async (data: any) => await updateUser(id,data),
         onSuccess: () => {
-            Swal.fire({
-                title: "Success",
-                text: "User Updated Successfully",
-                icon: "success",
-            })
+            // Swal.fire({
+            //     title: "Success",
+            //     text: "User Updated Successfully",
+            //     icon: "success",
+            // })
 
             queryClient.invalidateQueries({ queryKey: ["GET_ALL_USER"] })
         }
