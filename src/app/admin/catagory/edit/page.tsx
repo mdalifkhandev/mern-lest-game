@@ -1,20 +1,21 @@
-'use client'
+'use client';
 
-import { useDeletedUser, useGetAllUsers } from "@/src/hooks/user.hooks";
-import Loading from "../../signup/loading";
+
+import Loading from "@/src/app/signup/loading";
+import { useGetAllCatagory } from "@/src/hooks/catagory.hooks";
 import Swal from "sweetalert2";
 
-type TTableData = {
+type TCategoryData = {
   _id: string;
-  name: string;
-  email: string;
-  role: string;
+  catagoryName: string;
   isDeleted: boolean;
 };
 
-const page = () => {
-  const { data, isLoading, error } = useGetAllUsers();
-  const { mutate: deletedUser, error: deleteError } = useDeletedUser();
+const Page = () => {
+  const { data, isLoading, error } = useGetAllCatagory();
+  console.log(data);
+  
+//   const { mutate: deleteCategory, error: deleteError } = useDeleteCategory();
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -23,11 +24,11 @@ const page = () => {
     },
   });
 
-  const handleDeleteUser = (id: string) => {
+  const handleDeleteCategory = (id: string) => {
     swalWithBootstrapButtons
       .fire({
         title: "Are you sure?",
-        text: "Are you sure in deleting the user!",
+        text: "Are you sure you want to delete this category?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, delete it!",
@@ -36,16 +37,16 @@ const page = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          deletedUser(id);
+        //   deleteCategory(id);
           Swal.fire({
             title: "Deleted!",
-            text: "User Deleted Successfully.",
+            text: "Category Deleted Successfully.",
             icon: "success",
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal.fire({
             title: "Cancelled",
-            text: "User is safe :)",
+            text: "Category is safe :)",
             icon: "error",
           });
         }
@@ -55,30 +56,26 @@ const page = () => {
   if (isLoading) return <Loading />;
   if (error) return <p>Error: {error.message}</p>;
 
-  const datas = data.data;
+  const categories = data?.data;
+  
 
   return (
     <div className="p-4">
       <table className="table-auto w-full border-collapse border">
         <thead>
           <tr>
-            <th className="border border-gray-300 px-4 py-2">Name</th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">Role</th>
+            <th className="border border-gray-300 px-4 py-2">SN NO</th>
+            <th className="border border-gray-300 px-4 py-2">Category Name</th>
             <th className="border border-gray-300 px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {datas.map((item: TTableData, index: number) => (
+          {categories.map((item: TCategoryData, index: number) => (
             <tr key={index} className="hover:bg-gray-50 hover:text-black">
-              <td className="border border-gray-300 px-4 py-2">{item.name}</td>
-              <td className="border border-gray-300 px-4 py-2">{item.email}</td>
-              <td className="border border-gray-300 px-4 py-2">{item.role}</td>
+              <td className="border border-gray-300 px-4 py-2">{item.catagoryName              }</td>
               <td className="border border-gray-300 px-4 py-2 flex justify-center items-center gap-4">
                 <button
-                  onClick={() =>
-                    (window.location.href = `/admin/user/edit/${item._id}`)
-                  }
+                  onClick={() => (window.location.href = `/admin/category/edit/${item._id}`)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Edit
@@ -89,7 +86,7 @@ const page = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={() => handleDeleteUser(item._id)}
+                    onClick={() => handleDeleteCategory(item._id)}
                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2"
                   >
                     Delete
@@ -104,4 +101,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

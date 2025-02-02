@@ -42,6 +42,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
                 { name: "Edit", href: "/admin/products/edit" },
             ],
         },
+        {
+            name: "Catagory",
+            subRoutes: [
+                { name: "Create", href: "/admin/catagory/create" },
+                { name: "Edit", href: "/admin/catagory/edit" },
+            ],
+        },
         { name: "Contact", href: "/admin" },
     ];
 

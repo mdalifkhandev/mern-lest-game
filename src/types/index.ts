@@ -8,3 +8,14 @@ export type IUser = {
   role:string,
   email:string,
 }
+
+
+export type ProductData = {
+  productName: string;
+  description: string;
+  price: number;
+  stockQuantity: number;
+  category: string;
+  productImages: string[];
+  isDeleted: boolean;
+}

@@ -2,15 +2,17 @@
 
 import Loading from '@/src/app/signup/loading';
 import envConfig from '@/src/config/envConfig';
-import { useGetSingleProducts } from '@/src/hooks/products.hooks';
+import { useGetSingleProducts, useUpdateProduct } from '@/src/hooks/products.hooks';
 import { Button } from '@heroui/button';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 const Page = () => {
-    const id = '679e09a0b8bc7ace432678fb';
+    const params=useParams();
+    const id = params.id as string;
     const { data, isLoading, error } = useGetSingleProducts(id);
+    const {mutate:updateProduct}=useUpdateProduct(id);
     const product = data?.data;
     const navigate = useRouter();
 
@@ -22,6 +24,7 @@ const Page = () => {
         stockQuantity: 0,
         category: "",
         productImages: [] as string[],
+        isDeleted: false
     });
 
     // Populate formData when product data is loaded
@@ -34,6 +37,7 @@ const Page = () => {
                 stockQuantity: product.stockQuantity || 0,
                 category: product.category || "",
                 productImages: product.productImages || [],
+                isDeleted: product.isDeleted || false,
             });
         }
     }, [product]);
@@ -132,10 +136,9 @@ const Page = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                // updateProduct(formData);
+                updateProduct(formData);
                 console.log(formData);
-                
-                // navigate.push("/admin/product");
+                navigate.push("/admin/products/edit");
                 Swal.fire({
                     title: "Updated!",
                     text: "Product updated successfully.",
@@ -162,9 +165,9 @@ const Page = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                // updateProduct({ isDeleted: false });
+                updateProduct({ ...formData, isDeleted: false });
                 setIsDeleted(false);
-                // navigate.push("/admin/product");
+                navigate.push("/admin/products/edit");
                 Swal.fire({
                     title: "Un-deleted!",
                     text: "Product un-deleted successfully.",
@@ -274,7 +277,7 @@ const Page = () => {
                         onChange={handleImageChange}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     />
-                    <div className="mt-2 grid grid-cols-4 gap-2">
+                    <div className="mt-2 grid grid-cols-5 gap-2">
                         {formData.productImages.map((image, index) => (
                             <div key={index} className="relative">
                                 <img
