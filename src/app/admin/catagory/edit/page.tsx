@@ -2,7 +2,7 @@
 
 
 import Loading from "@/src/app/signup/loading";
-import { useGetAllCatagory } from "@/src/hooks/catagory.hooks";
+import { useDeleteCategory, useGetAllCatagory } from "@/src/hooks/catagory.hooks";
 import Swal from "sweetalert2";
 
 type TCategoryData = {
@@ -15,7 +15,7 @@ const Page = () => {
   const { data, isLoading, error } = useGetAllCatagory();
   console.log(data);
   
-//   const { mutate: deleteCategory, error: deleteError } = useDeleteCategory();
+  const { mutate: deleteCategory, error: deleteError } = useDeleteCategory();
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -37,7 +37,7 @@ const Page = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-        //   deleteCategory(id);
+          deleteCategory(id);
           Swal.fire({
             title: "Deleted!",
             text: "Category Deleted Successfully.",
@@ -72,10 +72,11 @@ const Page = () => {
         <tbody>
           {categories.map((item: TCategoryData, index: number) => (
             <tr key={index} className="hover:bg-gray-50 hover:text-black">
-              <td className="border border-gray-300 px-4 py-2">{item.catagoryName              }</td>
+              <td className="border border-gray-300 px-4 py-2">{index+1}</td>
+              <td className="border border-gray-300 px-4 py-2">{item.catagoryName}</td>
               <td className="border border-gray-300 px-4 py-2 flex justify-center items-center gap-4">
                 <button
-                  onClick={() => (window.location.href = `/admin/category/edit/${item._id}`)}
+                  onClick={() => (window.location.href = `/admin/catagory/edit/${item._id}`)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Edit

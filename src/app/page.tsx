@@ -1,4 +1,5 @@
 import LandingPage from "../components/home/LandingPage";
+import Products from "../components/home/Products";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <div className="">
       {/* <div className="inline-block max-w-xl text-center justify-center"> */}
         <LandingPage />
+        <Products/>
       </div>
     </section>
   );

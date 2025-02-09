@@ -50,7 +50,8 @@ export const getCurrentUser=async()=>{
         return {
             name:decoded.name,
             email:decoded.email,
-            role:decoded.role
+            role:decoded.role,
+            id:decoded.id
         }
     }
     return decoded

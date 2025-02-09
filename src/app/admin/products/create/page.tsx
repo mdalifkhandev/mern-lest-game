@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetAllCatagory } from "@/src/hooks/catagory.hooks";
 import { useProductsCreate } from "@/src/hooks/products.hooks";
 import uploadImageToImageBB from "@/src/utils/uplodeImage";
 import { ChangeEvent, useState } from "react";
@@ -8,6 +9,9 @@ import Swal from "sweetalert2";
 export default function CreateProducts() {
     const [imageFiles, setImageFiles] = useState<File[] | []>([]);
     const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
+    const {data}=useGetAllCatagory()
+    const catagorys=data?.data
+    
 
 
     const { mutate: productsCreate } = useProductsCreate()
@@ -138,6 +142,7 @@ export default function CreateProducts() {
             });
         }
     };
+console.log(formData);
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center p-8">
@@ -193,15 +198,14 @@ export default function CreateProducts() {
                         <label className="block text-sm font-medium text-gray-700">Category</label>
                         <select
                             name="category"
-                            value={formData.category}
+                            value={formData?.category}
                             onChange={handleChange}
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="">Select a category</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="books">Books</option>
-                            <option value="home">Home</option>
+                            {catagorys?.map((catagory: { _id: string; catagoryName: string }) => (
+                                <option key={catagory._id} value={catagory._id}>{catagory.catagoryName}</option>
+                            ))}
                         </select>
                     </div>
                 </div>

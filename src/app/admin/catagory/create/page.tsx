@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useCatagoryCreate } from "@/src/hooks/catagory.hooks";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,12 +7,11 @@ import Swal from "sweetalert2";
 
 export default function CreateCategory() {
     const { mutate: createCategory } = useCatagoryCreate();
-
     const [formData, setFormData] = useState({
         catagoryName: "",
     });
 
-    const navigate = useRouter()
+    const navigate = useRouter();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -23,12 +21,11 @@ export default function CreateCategory() {
     };
 
     const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: "btn btn-success",
-                cancelButton: "btn btn-danger"
-            }
-        });
-
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger",
+        },
+    });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,32 +37,27 @@ export default function CreateCategory() {
             return;
         }
 
-        swalWithBootstrapButtons.fire({
-                    title: "Are you sure?",
-                    text: "Are you sure in the Create Catagory?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Yes, Create it!",
-                    cancelButtonText: "No, cancel!",
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        createCategory(formData);
-                        // navigate.push("/admin/catagory/edit");
-                        // Swal.fire({
-                        //     title: "Create!",
-                        //     text: "Catagory Created successfully.",
-                        //     icon: "success"
-                        // });
-                    } else if (result.dismiss === Swal.DismissReason.cancel) {
-                        Swal.fire({
-                            title: "Cancelled",
-                            text: "Catagory not Created :)",
-                            icon: "error"
-                        });
-                    }
-                });
-
+        swalWithBootstrapButtons
+            .fire({
+                title: "Are you sure?",
+                text: "Are you sure in the Create Catagory?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Create it!",
+                cancelButtonText: "No, cancel!",
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    createCategory(formData);
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Catagory not Created :)",
+                        icon: "error",
+                    });
+                }
+            });
     };
 
     return (

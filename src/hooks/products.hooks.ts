@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { ProductData } from "../types";
 
 export const useProductsCreate = () => {
+    const queryClient = useQueryClient();
     return useMutation<any, Error, FieldValues>({
         mutationKey: ["PRODUCTS"],
         mutationFn: async (data) => {
@@ -16,6 +17,7 @@ export const useProductsCreate = () => {
                 text: "Products created successfully",
                 icon: "success",
             });
+            queryClient.invalidateQueries({ queryKey: ["PRODUCTS"] });
         },
         onError: (error) => {
             Swal.fire({
@@ -27,48 +29,45 @@ export const useProductsCreate = () => {
     });
 };
 
-export const useGetAllProducts = () => {
+export const useGetAllProducts = (queryParams:Record<string,any>) => {
     return useQuery<any, Error>({
-        queryKey: ["PRODUCTS"],
+        queryKey: ["PRODUCTS",queryParams],
         queryFn: async () => {
-            return await getAllProducts();
+            return await getAllProducts(queryParams);
         },
     });
 };
-
 
 export const useDeleteProduct = () => {
     const queryClient = useQueryClient();
     return useMutation<any, Error, string>({
         mutationFn: async (id) => {
-             await deleteProduct(id);
+            await deleteProduct(id);
         },
         onSuccess() {
-            queryClient.invalidateQueries({queryKey:["PRODUCTS"]});
+            queryClient.invalidateQueries({ queryKey: ["PRODUCTS"] });
         },
     });
-}
+};
 
-
-export const useGetSingleProducts=  (id:string) => {
+export const useGetSingleProducts = (id: string) => {
     return useQuery({
-        queryKey: ["PRODUCTS",id],
+        queryKey: ["PRODUCTS", id],
         queryFn: async ({ queryKey }) => {
             const [_key, id] = queryKey;
             return await getSingleProduct(id);
         },
     });
-}
+};
 
-
-export const useUpdateProduct = (id:string) => {
+export const useUpdateProduct = (id: string) => {
     const queryClient = useQueryClient();
     return useMutation<any, Error, ProductData>({
         mutationFn: async (product) => {
-            return await updateProduct(id,product);
+            return await updateProduct(id, product);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey:["PRODUCTS"]});
+            queryClient.invalidateQueries({ queryKey: ["PRODUCTS"] });
         },
     });
-}
+};

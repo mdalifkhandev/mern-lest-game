@@ -2,10 +2,11 @@
 
 import Loading from '@/src/app/signup/loading';
 import envConfig from '@/src/config/envConfig';
+import { useGetAllCatagory } from '@/src/hooks/catagory.hooks';
 import { useGetSingleProducts, useUpdateProduct } from '@/src/hooks/products.hooks';
 import { Button } from '@heroui/button';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 const Page = () => {
@@ -15,6 +16,8 @@ const Page = () => {
     const {mutate:updateProduct}=useUpdateProduct(id);
     const product = data?.data;
     const navigate = useRouter();
+    const {data:catagoryData}=useGetAllCatagory();
+    const catagories=catagoryData?.data;
 
     const [isDeleted, setIsDeleted] = useState<boolean>();
     const [formData, setFormData] = useState({
@@ -35,12 +38,19 @@ const Page = () => {
                 description: product.description || "",
                 price: product.price || 0,
                 stockQuantity: product.stockQuantity || 0,
-                category: product.category || "",
+                category: product.category?.catagoryName || "",
                 productImages: product.productImages || [],
                 isDeleted: product.isDeleted || false,
             });
         }
     }, [product]);
+
+    // Ensure client-specific logic is handled in useEffect
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // Client-specific logic here
+        }
+    }, []);
 
     useEffect(() => {
         if (product) {
@@ -246,10 +256,11 @@ const Page = () => {
                             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="">Select a category</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="books">Books</option>
-                            <option value="home">Home</option>
+                           {
+                                 catagories?.map((catagory:any)=>(
+                                      <option key={catagory._id} value={catagory._id}>{catagory.catagoryName}</option>
+                                 ))
+                           }
                         </select>
                     </div>
                 </div>

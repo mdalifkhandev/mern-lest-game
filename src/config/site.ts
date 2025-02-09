@@ -1,4 +1,4 @@
-export type SiteConfig = typeof siteConfig;
+import { getCurrentUser } from "../server/AuthServer";
 
 export const siteConfig = {
   name: "Next.js + HeroUI",
@@ -13,26 +13,8 @@ export const siteConfig = {
       href: "/products",
     },
     {
-      label: "About",
-      href: "/about",
-    },
-    {
-      label: "Admin",
-      href: "/admin",
-    },
-  ],
-  navMenuItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
-    {
-      label: "Products",
-      href: "/products",
-    },
-    {
-      label: "About",
-      href: "/about",
+      label: "MY Cart",
+      href: "/cart",
     },
     {
       label: "Admin",
@@ -40,3 +22,5 @@ export const siteConfig = {
     },
   ],
 };
+
+

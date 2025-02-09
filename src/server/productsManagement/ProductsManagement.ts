@@ -14,15 +14,36 @@ export const productsCreate=async(productsData:FieldValues)=>{
     }
 }
 
-export const getAllProducts=async()=>{
+// export const getAllProducts=async(queryParams:Record<string,any>)=>{
+//     const {page,limit,searchTerm,category}=queryParams
+//     try {
+//         const res=await axiosInstance.get(`/products?page=${page}&limit=${limit}&searchTerm=${searchTerm}&category=${category}`,)
+//         return res.data
+//     }catch(error:any){
+//         console.log(error)
+//         throw new Error(error.message)
+//     }
+// }
+export const getAllProducts = async (queryParams: Record<string, any>) => {
+    const { page, limit, ...restParams } = queryParams;
+
+    // Only include non-empty parameters
+    const filteredParams = Object.fromEntries(
+        Object.entries(restParams).filter(([_, value]) => value !== undefined && value !== "")
+    );
+
     try {
-        const res=await axiosInstance.get('/products')
-        return res.data
-    }catch(error:any){
-        console.log(error)
-        throw new Error(error.message)
+        const res = await axiosInstance.get("/products", {
+            params: { page, limit, ...filteredParams }, // Axios handles query params
+        });
+
+        return res.data;
+    } catch (error: any) {
+        console.error(error);
+        throw new Error(error.message);
     }
-}
+};
+
 
 
 export const deleteProduct=async(id:string)=>{
