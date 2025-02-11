@@ -74,10 +74,11 @@ export default function CreateCategory() {
 
         {/* Category Name Field */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor="catagoryName" className="block text-sm font-medium text-gray-700">
             Category Name
           </label>
           <input
+            id="catagoryName"
             type="text"
             name="catagoryName"
             value={formData.catagoryName}
