@@ -1,96 +1,48 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useCatagoryCreate } from "@/src/hooks/catagory.hooks";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Swal from "sweetalert2";
 
 export default function CreateCategory() {
   const { mutate: createCategory } = useCatagoryCreate();
-  const [formData, setFormData] = useState({
-    catagoryName: "",
-  });
+  const [catagoryName, setCatagoryName] = useState("");
+  const [isClient, setIsClient] = useState(false);
 
-  const navigate = useRouter();
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  const swalWithBootstrapButtons = Swal.mixin({
-    customClass: {
-      confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger",
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
-    if (formData.catagoryName.length < 3) {
-      Swal.fire({
-        icon: "warning",
-        title: "Category name must be at least 3 characters long",
-      });
-      return;
+    if (catagoryName.trim()) {
+      createCategory({ catagoryName });
+      setCatagoryName("");
     }
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "Are you sure in the Create Catagory?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, Create it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          createCategory(formData);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "Cancelled",
-            text: "Catagory not Created :)",
-            icon: "error",
-          });
-        }
-      });
   };
+
+  if (!isClient) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-50 to-purple-50 p-4 dark:from-gray-800 dark:to-gray-900">
       <form
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
         onSubmit={handleSubmit}
+        className="w-full max-w-sm rounded-lg bg-white p-6 shadow-md dark:bg-gray-700"
       >
-        <h1 className="text-2xl font-bold mb-6 text-center text-black">
+        <h1 className="mb-4 text-center text-2xl font-bold text-gray-900 dark:text-white">
           Create Category
         </h1>
-
-        {/* Category Name Field */}
-        <div className="mb-4">
-          <label htmlFor="catagoryName" className="block text-sm font-medium text-gray-700">
-            Category Name
-          </label>
-          <input
-            id="catagoryName"
-            type="text"
-            name="catagoryName"
-            value={formData.catagoryName}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter category name"
-          />
-        </div>
-
+        <input
+          type="text"
+          name="catagoryName"
+          value={catagoryName}
+          onChange={(e) => setCatagoryName(e.target.value)}
+          placeholder="Enter category name"
+          className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+          required
+        />
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-all duration-300"
+          className="mt-4 w-full rounded-md bg-blue-600 px-4 py-2 text-white transition duration-300 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
         >
           Create Category
         </button>
