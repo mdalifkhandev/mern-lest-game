@@ -1,15 +1,21 @@
-import { Button } from '@heroui/button';
-import { Card as MainCard, CardBody, CardFooter, CardHeader } from '@heroui/card';
-import { Image } from '@heroui/image';
-import { useRouter } from 'next/navigation';
+import { Button } from "@heroui/button";
+import {
+  Card as MainCard,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "@heroui/card";
+import { Image } from "@heroui/image";
+import { useRouter } from "next/navigation";
 
 const Card = ({ product }: { product: any }) => {
-  const { productName, description, price, stockQuantity, productImages } = product;
+  const { productName, description, price, stockQuantity, productImages } =
+    product;
 
   // Determine if the product is out of stock
   const isOutOfStock = stockQuantity <= 0;
 
-  const navigate=useRouter()
+  const navigate = useRouter();
 
   const handlePress = () => {
     navigate.push(`/products/${product._id}`);
@@ -27,7 +33,10 @@ const Card = ({ product }: { product: any }) => {
         <Image
           alt="Card background"
           className="object-cover rounded-xl"
-          src={productImages[0] || "https://heroui.com/images/hero-card-complete.jpeg"} // Fallback image if imageUrl is not provided
+          src={
+            productImages[0] ||
+            "https://heroui.com/images/hero-card-complete.jpeg"
+          } // Fallback image if imageUrl is not provided
           width={270}
           height={180}
         />
@@ -46,13 +55,14 @@ const Card = ({ product }: { product: any }) => {
         </div>
         <Button
           onPress={handlePress}
-          className={`mt-4 w-full ${isOutOfStock
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700'
-            } text-white font-semibold py-2 rounded-lg transition-colors duration-300`}
+          className={`mt-4 w-full ${
+            isOutOfStock
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          } text-white font-semibold py-2 rounded-lg transition-colors duration-300`}
           disabled={isOutOfStock}
         >
-          {isOutOfStock ? 'Out of Stock' : 'Details'}
+          {isOutOfStock ? "Out of Stock" : "Details"}
         </Button>
       </CardFooter>
     </MainCard>

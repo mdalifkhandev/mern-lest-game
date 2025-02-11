@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useDeletedUser, useGetAllUsers } from "@/src/hooks/user.hooks";
 import Loading from "../../signup/loading";

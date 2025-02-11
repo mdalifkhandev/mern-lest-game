@@ -4,11 +4,10 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
 export type IUser = {
-  name:string,
-  role:string,
-  email:string,
-}
-
+  name: string;
+  role: string;
+  email: string;
+};
 
 export type ProductData = {
   productName: string;
@@ -18,4 +17,4 @@ export type ProductData = {
   category: string;
   productImages: string[];
   isDeleted: boolean;
-}
+};

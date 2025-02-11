@@ -14,9 +14,7 @@ export interface ProvidersProps {
   themeProps?: ThemeProviderProps;
 }
 
-
-const queryclient = new QueryClient()
-
+const queryclient = new QueryClient();
 
 declare module "@react-types/shared" {
   interface RouterConfig {
@@ -33,9 +31,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <QueryClientProvider client={queryclient}>
       <HeroUIProvider navigate={router.push}>
         <NextThemesProvider {...themeProps}>
-          <UserProvider>
-            {children}
-          </UserProvider>
+          <UserProvider>{children}</UserProvider>
         </NextThemesProvider>
       </HeroUIProvider>
     </QueryClientProvider>

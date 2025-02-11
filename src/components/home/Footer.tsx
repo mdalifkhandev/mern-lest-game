@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function Footer() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -22,8 +22,12 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
           <nav className="flex flex-col space-y-2">
-            <a href="/" className="hover:text-gray-400">Home</a>
-            <a href="/products" className="hover:text-gray-400">Products</a>
+            <a href="/" className="hover:text-gray-400">
+              Home
+            </a>
+            <a href="/products" className="hover:text-gray-400">
+              Products
+            </a>
           </nav>
         </div>
 
@@ -31,9 +35,15 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-semibold mb-2">Follow Us</h3>
           <nav className="flex flex-col space-y-2">
-            <a href="#" className="hover:text-gray-400">Facebook</a>
-            <a href="#" className="hover:text-gray-400">Twitter</a>
-            <a href="#" className="hover:text-gray-400">Instagram</a>
+            <a href="#" className="hover:text-gray-400">
+              Facebook
+            </a>
+            <a href="#" className="hover:text-gray-400">
+              Twitter
+            </a>
+            <a href="#" className="hover:text-gray-400">
+              Instagram
+            </a>
           </nav>
         </div>
 
@@ -42,7 +52,9 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-2">Information</h3>
           <p className="text-sm">Address: 1234 Street Name, City, Country</p>
           <p className="text-sm">Email: contact@yourcompany.com</p>
-          <p className="text-sm mt-4">&copy; {year} Your Company. All rights reserved.</p>
+          <p className="text-sm mt-4">
+            &copy; {year} Your Company. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

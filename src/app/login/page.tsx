@@ -27,23 +27,21 @@ const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleUserLogin(formData);
-
   };
 
-
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const redirect = searchParams.get("redirect") || '/'
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirect = searchParams.get("redirect") || "/";
 
   useEffect(() => {
     if (isSuccess) {
       if (redirect) {
-        router.push('/')
+        router.push("/");
       } else {
-        router.push('/')
+        router.push("/");
       }
     }
-  }, [isSuccess, isPending])
+  }, [isSuccess, isPending]);
 
   if (isPending) {
     return <Loading />;

@@ -1,7 +1,10 @@
-'use client'
+"use client";
 
 import Loading from "@/src/app/signup/loading";
-import { useDeleteProduct, useGetAllProducts } from "@/src/hooks/products.hooks";
+import {
+  useDeleteProduct,
+  useGetAllProducts,
+} from "@/src/hooks/products.hooks";
 import Swal from "sweetalert2";
 import { useState } from "react"; // Import useState for pagination
 
@@ -17,16 +20,16 @@ type TTableData = {
 };
 
 const page = () => {
-  
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1); // Set current page from meta data
   const [itemsPerPage, setItemsPerPage] = useState(10); // Set items per page from meta data
-  
-  const { data, isLoading, error } = useGetAllProducts({limit:itemsPerPage, page:currentPage});
 
+  const { data, isLoading, error } = useGetAllProducts({
+    limit: itemsPerPage,
+    page: currentPage,
+  });
 
   const { mutate: deletedProduct, error: deleteError } = useDeleteProduct();
-
 
   const swalWithBootstrapButtons = Swal.mixin({
     customClass: {
@@ -112,21 +115,38 @@ const page = () => {
             <th className="border border-gray-300 px-4 py-2">Price</th>
             <th className="border border-gray-300 px-4 py-2">Stock Quantity</th>
             <th className="border border-gray-300 px-4 py-2">Category</th>
-            <th className="border border-gray-300 px-4 py-2">Images & Actions</th>
+            <th className="border border-gray-300 px-4 py-2">
+              Images & Actions
+            </th>
           </tr>
         </thead>
         <tbody>
           {datas.map((item: TTableData, index: number) => (
             <tr key={index} className="hover:bg-gray-50 hover:text-black">
-              <td className="border border-gray-300 px-4 py-2">{index+1}</td>
-              <td className="border border-gray-300 px-4 py-2">{item.productName}</td>
-              <td className="border border-gray-300 px-4 py-2">{item.description}</td>
-              <td className="border border-gray-300 px-4 py-2">${item?.price.toFixed(2)}</td>
-              <td className="border border-gray-300 px-4 py-2">{item.stockQuantity}</td>
-              <td className="border border-gray-300 px-4 py-2">{item?.category?.catagoryName}</td>
+              <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.productName}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.description}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                ${item?.price.toFixed(2)}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.stockQuantity}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item?.category?.catagoryName}
+              </td>
               <td className="border border-gray-300 px-4 py-2 grid grid-cols-3">
                 {item?.productImages?.map((image, idx) => (
-                  <img key={idx} src={image} alt={`Product Image ${idx + 1}`} className="w-10 h-10 inline-block m-1" />
+                  <img
+                    key={idx}
+                    src={image}
+                    alt={`Product Image ${idx + 1}`}
+                    className="w-10 h-10 inline-block m-1"
+                  />
                 ))}
               </td>
               <td className="border border-gray-300 px-4 py-2 flex justify-center items-center gap-4">

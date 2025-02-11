@@ -1,11 +1,13 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900">
       <div className="text-center">
         {/* হেডিং */}
-        <h1 className="text-9xl font-bold text-gray-800 dark:text-gray-100">404</h1>
+        <h1 className="text-9xl font-bold text-gray-800 dark:text-gray-100">
+          404
+        </h1>
         <h2 className="text-4xl font-semibold text-gray-700 dark:text-gray-300 mt-4">
           Page Not Found
         </h2>
