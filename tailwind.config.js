@@ -1,5 +1,8 @@
 import {heroui} from "@heroui/theme"
 
+var require = createRequire(import.meta.url);
+var module = { exports: {} };
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -17,4 +20,4 @@ module.exports = {
   },
   darkMode: "class",
   plugins: [heroui()],
-}
+};
